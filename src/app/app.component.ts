@@ -1,4 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { map } from 'rxjs';
+import {
+  changeLastUpdate,
+  countSelector,
+  decrement,
+  increment,
+  lastUpdateSelector,
+  reset,
+} from './reducers/counter';
 
 @Component({
   selector: 'app-root',
@@ -6,28 +16,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  count: number = 1;
-  public get cannotDecrese(): boolean {
-    return this.count <= 0;
-  }
-  lastUpdate?: number;
+  constructor(private store: Store) {}
 
-  runTimer(): void {
-    setInterval(() => (this.count += 0.00364583333), 10);
-  }
+  count$ = this.store.select(countSelector);
+  cannotDecrese$ = this.count$.pipe(map((count) => count <= 0));
+  lastUpdate$ = this.store.select(lastUpdateSelector);
 
   increment(): void {
-    this.lastUpdate = Date.now();
-    this.count++;
+    this.store.dispatch(increment());
   }
 
   decrement(): void {
-    this.lastUpdate = Date.now();
-    this.count--;
+    this.store.dispatch(decrement());
   }
 
   reset(): void {
-    this.lastUpdate = Date.now();
-    this.count = 0;
+    this.store.dispatch(reset());
   }
 }

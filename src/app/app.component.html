@@ -1,15 +1,20 @@
 <button class="fs-50 m-20 p-50" (click)="increment()">+1</button>
-<button class="fs-50 m-20 p-50" [disabled]="cannotDecrese" (click)="decrement()">
+<button
+  class="fs-50 m-20 p-50"
+  [disabled]="cannotDecrese$ | async"
+  (click)="decrement()"
+>
   -1
 </button>
-<button class="fs-50 m-20 p-50" [disabled]="cannotDecrese" (click)="reset()">
+<button
+  class="fs-50 m-20 p-50"
+  [disabled]="cannotDecrese$ | async"
+  (click)="reset()"
+>
   = 0
 </button>
-<button class="fs-50 m-20 p-50" (click)="runTimer()">
- Run Timer
-</button>
 
-<p class="fs-50">Счетчик = {{ count }}</p>
-<p class="fs-30" *ngIf="lastUpdate">
-  Последнее обновление = {{ lastUpdate | date: "HH:mm:ss  dd/MM/yyyy" }}
+<p class="fs-50">Счетчик = {{ count$ | async }}</p>
+<p class="fs-30" *ngIf="lastUpdate$ | async">
+  Последнее обновление = {{ lastUpdate$ | async | date: "HH:mm:ss  dd/MM/yyyy" }}
 </p>
